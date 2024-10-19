@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Data;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,6 +24,9 @@ namespace myTunes
             musicRepo = new MusicRepo();
             string[] playlists = musicRepo.Playlists;
             songsListBox.ItemsSource = playlists;
+            
+            dataGrid.ItemsSource = musicRepo.Songs.DefaultView;
+            
         }
     }
 }
