@@ -10,6 +10,7 @@ using System.Net;
 using System.IO;
 using System.Xml;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace myTunes
 {
@@ -21,14 +22,14 @@ namespace myTunes
         public const string XSD_MUSICFILE = "music.xsd";
 
 
-        public string[] Playlists
+        public ObservableCollection<string> Playlists
         {
             get
             {
                 var items = from row in musicDataSet.Tables["playlist"].AsEnumerable()
                             orderby row["name"]
                             select row["name"].ToString();
-                return items.ToArray();
+                return new ObservableCollection<string>(items.ToList());
             }
         }
 

@@ -18,15 +18,18 @@ namespace myTunes
     public partial class MainWindow : Window
     {
         private readonly MusicRepo musicRepo;
+
         public MainWindow()
         {
             InitializeComponent();
             musicRepo = new MusicRepo();
-            string[] playlists = musicRepo.Playlists;
+            var playlists = musicRepo.Playlists;
+            playlists.Insert(0, "All Music");
+            //Bind playlists
             songsListBox.ItemsSource = playlists;
             
             dataGrid.ItemsSource = musicRepo.Songs.DefaultView;
             
         }
-    }
+    } 
 }
