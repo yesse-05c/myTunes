@@ -73,6 +73,15 @@
     <url>https://www.last.fm/music/Ladytron/Velocifero</url>
     <albumImage>https://lastfm-img2.akamaized.net/i/u/34s/80be199236f14a8b8a3b15ee379ab5d1.png</albumImage>
   </song>
+	<song>
+		<id>19</id>
+		<title>Kansas City Mirna</title>
+		<artist>Various Artists</artist>
+		<album>The Greatest 1 Hit Wonders (Re-Recorded / Remastered Versions)</album>
+		<filename>\\Mac\Home\Downloads\Kansas-City.mp3</filename>
+		<length>2:21</length>
+		<genre>Pop</genre>
+	</song>
   <playlist>
     <name>Cool stuff!</name>
   </playlist>

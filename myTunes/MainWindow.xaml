@@ -6,6 +6,10 @@
         xmlns:local="clr-namespace:myTunes"
         mc:Ignorable="d"
         Title="MainWindow" Height="571" Width="1000">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:CustomCommands.Play}" Executed="PlayCommand_Executed" CanExecute="PlayCommand_CanExecute"></CommandBinding>
+        <CommandBinding Command="{x:Static local:CustomCommands.Stop}" Executed="StopCommand_Executed" CanExecute="StopCommand_CanExecute"></CommandBinding>
+    </Window.CommandBindings>
     <Grid Margin="0,0,35,19">
         <ListBox x:Name="songsListBox" Margin="20,80,770,10">
             <ListBox.ItemTemplate>
@@ -16,7 +20,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <DataGrid x:Name="dataGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" HorizontalAlignment="Right" Width="751" Margin="0,80,0,77">
+        <DataGrid x:Name="dataGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" HorizontalAlignment="Right" Width="751" Margin="0,80,0,77">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding id}" Visibility="Hidden"/>
                 <DataGridTextColumn Binding="{Binding title}" Header="Title" Width="240"/>
@@ -25,5 +29,9 @@
                 <DataGridTextColumn Binding="{Binding genre}" Header="Genre" Width="137"/>
             </DataGrid.Columns>
         </DataGrid>
+        <StackPanel Margin="214,477,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="342">
+            <Button x:Name="playButton" Content="Play" Margin="5" Width="75" Command="{x:Static local:CustomCommands.Play}"/>
+            <Button x:Name="stopButton" Content="Stop" Margin="5" Width="75" Command="{x:Static local:CustomCommands.Stop}"/>
+        </StackPanel>
     </Grid>
 </Window>
