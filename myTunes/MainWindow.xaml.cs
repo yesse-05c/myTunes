@@ -130,6 +130,7 @@ namespace myTunes
                 MessageBox.Show("File not found: " + filePath + "Current Directory: " + Environment.CurrentDirectory);
             }
         }
+        //GPT prompt: Alter my code to create a function that stops a song from playing.
         private void StopSong()
         {
             if (isPlaying)
@@ -139,6 +140,10 @@ namespace myTunes
                 isPlaying = false;
                 playbackTimer.Stop();
             }
+        }
+        private void StopMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            StopSong();
         }
         private void PlayCommand_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {

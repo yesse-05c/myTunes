@@ -32,6 +32,7 @@
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Play" Click="PlayMenuItem_Click" />
+                    <MenuItem Header="Stop" Click="StopMenuItem_Click"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
