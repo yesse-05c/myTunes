@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Threading.Tasks;
 using System.IO;
+using Microsoft.Win32;
 
 namespace myTunes
 
@@ -53,6 +54,8 @@ namespace myTunes
             dataGrid.ItemsSource = musicRepo.Songs.DefaultView;
             playButton.Click += PlayButton_Click;
             stopButton.Click += StopButton_Click;
+            addSongButton.Click += AddSongButton_Click; // Assume you have a button named addSongButton
+
         }
         //code gotten from ChatGPT prompt: I want you to alter the code so that when a specific playlist is selected, only songs from that playlist should be displayed in the data grid. 
         private void songsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -75,7 +78,55 @@ namespace myTunes
                 dataGrid.ItemsSource = null;
             }
         }
+        //Code below gotten from GPT prompt: Alter my code so that the app should allow songs to be added to the listing of songs by launching an open dialog box and allowing the user to select a song.  Provide a filter that by default shows .mp3, .m4a, .wma, and .wav files in the open file dialog box.  After selecting a song, the program should read the metadata stored in the music file (if available), add the song to the data grid, and select/highlight the song (so the user can see it among the list of potentially hundreds of songs).
 
+        private void AddSongButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Open File Dialog
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Music Files|*.mp3;*.m4a;*.wma;*.wav",
+                Title = "Select a Song"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string filePath = openFileDialog.FileName;
+
+                // Read the metadata and add the song to the musicRepo
+                AddSongToMusicRepo(filePath);
+            }
+        }
+
+        private void AddSongToMusicRepo(string filePath)
+        {
+            // Use TagLib to read metadata
+            var file = TagLib.File.Create(filePath);
+            string title = file.Tag.Title ?? System.IO.Path.GetFileNameWithoutExtension(filePath);
+            string artist = file.Tag.Artists.Length > 0 ? file.Tag.Artists[0] : "Unknown Artist";
+            string album = file.Tag.Album ?? "Unknown Album";
+
+            // Add song to the MusicRepo (you'll need to implement this)
+            musicRepo.AddSong(new Song
+            {
+                Title = title,
+                Artist = artist,
+                Album = album,
+                Filename = filePath
+            });
+
+            // Refresh the data grid to show the new song
+            dataGrid.ItemsSource = musicRepo.Songs.DefaultView;
+
+            // Select the newly added song (optional)
+            if (musicRepo.Songs.Rows.Count > 0)
+            {
+                DataRow lastRow = musicRepo.Songs.Rows[musicRepo.Songs.Rows.Count - 1];
+                dataGrid.SelectedItem = lastRow; // Select the DataRow directly
+                dataGrid.ScrollIntoView(lastRow); // Scroll into view
+            }// Refresh the data grid
+            // Assuming newSong is the object you just added
+        }
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             PlaySelectedSong();

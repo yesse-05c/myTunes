@@ -39,6 +39,7 @@
         <StackPanel Margin="214,477,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="342">
             <Button x:Name="playButton" Content="Play" Margin="5" Width="75"/>
             <Button x:Name="stopButton" Content="Stop" Margin="5" Width="75"/>
+            <Button x:Name="addSongButton" Content="Add Song" Margin="5" Width="75"></Button>
         </StackPanel>
     </Grid>
 </Window>
