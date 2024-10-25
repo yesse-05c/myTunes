@@ -409,6 +409,7 @@ namespace myTunes
             table.Columns.Add("artist");
             table.Columns.Add("album");
             table.Columns.Add("genre");
+           
 
             // Join on the song ID to create a single table
             var songs = from r1 in musicDataSet.Tables["playlist_song"].AsEnumerable()
@@ -417,7 +418,7 @@ namespace myTunes
                             where (string)r1["playlist_name"] == playlist
                             orderby r1["position"]
                        select new { Id = r2["id"], Position = r1["position"], Title = r2["title"],
-                        Artist = r2["artist"], Album = r2["album"], Genre = r2["genre"]
+                        Artist = r2["artist"], Album = r2["album"], Genre = r2["genre"],
                        };
 
             Console.WriteLine("Songs for playlist " + playlist + ":");
