@@ -91,7 +91,7 @@ namespace myTunes
             StopSong();
         }
 
-
+        //GPT Prompt: Create a function that takes the selected item and plays it with the MediaPlayer class
         private void PlaySelectedSong()
         {
             if (dataGrid.SelectedItem is DataRowView selectedRow)
@@ -134,10 +134,8 @@ namespace myTunes
         {
             if (isPlaying)
             {
-                // Stop the currently playing song
                 Console.WriteLine("Stopping song.");
-                // mediaPlayer.Stop(); // Assuming you have a media player instance
-
+                mediaPlayer.Stop(); // Stop the media player
                 isPlaying = false;
                 playbackTimer.Stop();
             }
