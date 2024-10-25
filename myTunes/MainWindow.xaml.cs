@@ -16,21 +16,14 @@ namespace myTunes
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-    public static class CustomCommands
-    {
-        // Make command accessible to XAML
-        public static readonly RoutedUICommand Play = new RoutedUICommand(
-                 "Play", "Play", typeof(CustomCommands));
-        public static readonly RoutedUICommand Stop = new RoutedUICommand(
-            "Stop", "Stop", typeof(CustomCommands));
-    }
+  
 
     public partial class MainWindow : Window
     {
         private readonly MusicRepo musicRepo;
         private readonly MediaPlayer mediaPlayer;
         private bool isPlaying = false;
-
+        
 
 
         public MainWindow()
@@ -38,6 +31,7 @@ namespace myTunes
             InitializeComponent();
             musicRepo = new MusicRepo();
             mediaPlayer = new MediaPlayer();
+            DataContext = musicRepo;
             var playlists = musicRepo.Playlists;
             playlists.Insert(0, "All Music");
             //Bind playlists
@@ -45,6 +39,27 @@ namespace myTunes
             
             dataGrid.ItemsSource = musicRepo.Songs.DefaultView;
             
+        }
+
+        private void songsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Get the selected playlist name
+            string selectedPlaylist = (string)songsListBox.SelectedItem;
+
+            // Check if a playlist is selected
+            if (!string.IsNullOrEmpty(selectedPlaylist))
+            {
+                // Get songs from the selected playlist
+                DataTable playlistSongs = musicRepo.SongsForPlaylist(selectedPlaylist);
+
+                // Set the DataGrid's item source to display playlist songs
+                dataGrid.ItemsSource = playlistSongs.DefaultView;
+            }
+            else
+            {
+                // Clear the DataGrid if no playlist is selected
+                dataGrid.ItemsSource = null;
+            }
         }
         private void PlayCommand_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {

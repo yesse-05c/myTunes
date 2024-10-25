@@ -7,11 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="571" Width="1000">
     <Window.CommandBindings>
-        <CommandBinding Command="{x:Static local:CustomCommands.Play}" Executed="PlayCommand_Executed" CanExecute="PlayCommand_CanExecute"></CommandBinding>
-        <CommandBinding Command="{x:Static local:CustomCommands.Stop}" Executed="StopCommand_Executed" CanExecute="StopCommand_CanExecute"></CommandBinding>
-    </Window.CommandBindings>
+        </Window.CommandBindings>
     <Grid Margin="0,0,35,19">
-        <ListBox x:Name="songsListBox" Margin="20,80,770,10">
+        <ListBox x:Name="songsListBox" Margin="20,80,770,10" ItemsSource="{Binding Playlists}"
+                 SelectionChanged="songsListBox_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
@@ -30,8 +29,8 @@
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Margin="214,477,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="342">
-            <Button x:Name="playButton" Content="Play" Margin="5" Width="75" Command="{x:Static local:CustomCommands.Play}"/>
-            <Button x:Name="stopButton" Content="Stop" Margin="5" Width="75" Command="{x:Static local:CustomCommands.Stop}"/>
+            <Button x:Name="playButton" Content="Play" Margin="5" Width="75"/>
+            <Button x:Name="stopButton" Content="Stop" Margin="5" Width="75"/>
         </StackPanel>
     </Grid>
 </Window>
