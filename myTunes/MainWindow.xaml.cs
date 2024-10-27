@@ -50,8 +50,11 @@ namespace myTunes
             playlists.Insert(0, "All Music");
             //Bind playlists
             songsListBox.ItemsSource = playlists;
-            
+
+            // Select "All Music" initially to display all songs
+            songsListBox.SelectedIndex = 0;  // Select "All Music" by default
             dataGrid.ItemsSource = musicRepo.Songs.DefaultView;
+
             playButton.Click += PlayButton_Click;
             stopButton.Click += StopButton_Click;
             addSongButton.Click += AddSongButton_Click; // Assume you have a button named addSongButton
@@ -63,8 +66,13 @@ namespace myTunes
             // Get the selected playlist name
             string selectedPlaylist = (string)songsListBox.SelectedItem;
 
+            if (selectedPlaylist == "All Music")
+            {
+                // Display all songs if "All Music" is selected
+                dataGrid.ItemsSource = musicRepo.Songs.DefaultView;
+            }
             // Check if a playlist is selected
-            if (!string.IsNullOrEmpty(selectedPlaylist))
+            else if (!string.IsNullOrEmpty(selectedPlaylist))
             {
                 // Get songs from the selected playlist
                 DataTable playlistSongs = musicRepo.SongsForPlaylist(selectedPlaylist);
@@ -115,8 +123,11 @@ namespace myTunes
                 Filename = filePath
             });
 
-            // Refresh the data grid to show the new song
-            dataGrid.ItemsSource = musicRepo.Songs.DefaultView;
+            // Refresh the data grid to show the new song and also ensure "All Music" is selected
+            if (songsListBox.SelectedItem?.ToString() == "All Music")
+            {
+                dataGrid.ItemsSource = musicRepo.Songs.DefaultView; // Show all songs
+            }
 
             // Select the newly added song (optional)
             if (musicRepo.Songs.Rows.Count > 0)
@@ -216,5 +227,85 @@ namespace myTunes
             e.CanExecute = dataGrid.ItemsSource != null;
         }
 
+        private void AddPlaylistButton_Click(object sender, RoutedEventArgs e)
+        {
+            var addPlaylistWindow = new AddPlaylist { Owner = this };
+            if (addPlaylistWindow.ShowDialog() == true)
+            {
+                string newPlaylistName = addPlaylistWindow.PlaylistName;
+                if (musicRepo.AddPlaylist(newPlaylistName))
+                {
+                    RefreshPlaylists();
+                    // After adding a new playlist, ensure "All Music" is still selected
+                    songsListBox.SelectedIndex = 0; // This selects "All Music"
+                }
+                else
+                {
+                    MessageBox.Show("A playlist with that name already exists.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+
+        private void RefreshPlaylists()
+        {
+            // Fetch playlists from musicRepo
+            var playlists = musicRepo.GetPlaylists();
+
+            // Ensure "All Music" is always the first item
+            if (!playlists.Contains("All Music"))
+            {
+                playlists.Insert(0, "All Music");
+            }
+
+            songsListBox.ItemsSource = playlists; // Directly set the updated playlists to the ItemsSource
+        }
+        private void PlaylistsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (songsListBox.SelectedItem is string playlistName)
+            {
+                DisplaySongsForPlaylist(playlistName);
+            }
+        }
+
+        private void DisplaySongsForPlaylist(string playlistName)
+        {
+            if (playlistName == "All Music")
+            {
+                // Display all songs if "All Music" is selected
+                dataGrid.ItemsSource = musicRepo.Songs.DefaultView;
+            }
+            else
+            {
+                // Display songs for the specific playlist
+                var songTable = musicRepo.SongsForPlaylist(playlistName);
+                dataGrid.ItemsSource = songTable.DefaultView;
+            }
+        }
+
+        private void SongsDataGrid_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && dataGrid.SelectedItem != null)
+            {
+                var songId = ((DataRowView)dataGrid.SelectedItem)["id"];
+                DragDrop.DoDragDrop(dataGrid, songId, DragDropEffects.Move);
+            }
+        }
+
+        private void SongsDataGrid_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(int)) && songsListBox.SelectedItem is string playlistName)
+            {
+                int songId = (int)e.Data.GetData(typeof(int));
+                musicRepo.AddSongToPlaylist(songId, playlistName);
+                DisplaySongsForPlaylist(playlistName);
+            }
+        }
+        
+        private void moreInfo_Click(object sender, RoutedEventArgs e)
+        {
+            var about = new About();
+            about.Owner = this; // Set the owner to the main window
+            about.ShowDialog();
+        }
     }
 }

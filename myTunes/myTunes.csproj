@@ -9,7 +9,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\folder.png" />
+    <None Remove="Images\info.png" />
+    <None Remove="Images\playlist.png" />
+    <None Remove="Images\wave-sound.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="TagLibSharp" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\folder.png" />
+    <Resource Include="Images\info.png" />
+    <Resource Include="Images\playlist.png" />
+    <Resource Include="Images\wave-sound.png" />
   </ItemGroup>
 
   <ItemGroup>

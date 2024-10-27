@@ -239,6 +239,7 @@ namespace myTunes
             try
             {
                 table.Rows.Add(row);
+                musicDataSet.WriteXml("music.xml");
             }
             catch (Exception)
             {
@@ -436,7 +437,12 @@ namespace myTunes
             }
 
             return table;
-        }       
+        }
+
+        public ObservableCollection<string> GetPlaylists()
+        {
+            return Playlists;
+        }
     }    
 
 }

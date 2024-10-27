@@ -1,0 +1,14 @@
+﻿<Window x:Name="AboutWindow" x:Class="myTunes.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:myTunes"
+        mc:Ignorable="d"
+        Title="About" Height="309" Width="454" Icon="/Images/wave-sound.png">
+    <Grid>
+        <Label Content="My Tunes" HorizontalAlignment="Center" Margin="0,51,0,0" VerticalAlignment="Top" FontFamily="Comic Sans MS" FontSize="38" FontWeight="Bold" Foreground="#FF4B52C8"/>
+        <Label Content="Created by: Mirna Callejas and Garret Gill" HorizontalAlignment="Center" Margin="0,147,0,0" VerticalAlignment="Top" FontFamily="Segoe Print" Height="49" FontWeight="Bold" FontSize="18"/>
+        <Button Content="Ok" HorizontalAlignment="Center" Margin="0,201,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.737,1.567" Height="41" Width="106" Click="Close_Click"/>
+    </Grid>
+</Window>

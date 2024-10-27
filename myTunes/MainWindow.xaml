@@ -5,41 +5,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:myTunes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="571" Width="1000">
+        Title="My Tunes" Height="571" Width="1000" Icon="/Images/wave-sound.png">
     <Window.CommandBindings>
         </Window.CommandBindings>
-    <Grid Margin="0,0,35,19">
-        <MediaElement Name="mediaElement" LoadedBehavior="Manual" UnloadedBehavior="Stop" />
+    <DockPanel>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button x:Name="addSongButton" Margin="5" Width="50" ToolTip="Add Song">
+                    <Image Source="/Images/folder.png" ></Image>
+                </Button>
+                <Button x:Name="addPlaylistButton" Margin="5" Width="50" ToolTip="Add Playlist" Click="AddPlaylistButton_Click">
+                    <Image Source="/Images/playlist.png" ></Image>
+                </Button>
+                <Button x:Name="infoButton" Margin="5" Width="50" ToolTip="More info" Click="moreInfo_Click">
+                    <Image Source="/Images/info.png" ></Image>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid Margin="0,0,35,19" Height="458">
+            <MediaElement Name="mediaElement" LoadedBehavior="Manual" UnloadedBehavior="Stop" Margin="0,0,0,39" />
 
-        <ListBox x:Name="songsListBox" Margin="20,80,770,10" ItemsSource="{Binding Playlists}"
-                 SelectionChanged="songsListBox_SelectionChanged">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical">
-                        <Label Content="{Binding}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <DataGrid x:Name="dataGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" HorizontalAlignment="Right" Width="751" Margin="0,80,0,77">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding id}" Visibility="Hidden"/>
-                <DataGridTextColumn Binding="{Binding title}" Header="Title" Width="240"/>
-                <DataGridTextColumn Binding="{Binding artist}" Header="Artist" Width="185"/>
-                <DataGridTextColumn Binding="{Binding album}" Header="Album" Width="185"/>
-                <DataGridTextColumn Binding="{Binding genre}" Header="Genre" Width="137"/>
-            </DataGrid.Columns>
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Play" Click="PlayMenuItem_Click" />
-                    <MenuItem Header="Stop" Click="StopMenuItem_Click"/>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-        </DataGrid>
-        <StackPanel Margin="214,477,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="342">
-            <Button x:Name="playButton" Content="Play" Margin="5" Width="75"/>
-            <Button x:Name="stopButton" Content="Stop" Margin="5" Width="75"/>
-            <Button x:Name="addSongButton" Content="Add Song" Margin="5" Width="75"></Button>
-        </StackPanel>
-    </Grid>
+            <ListBox x:Name="songsListBox" Margin="20,31,770,30" ItemsSource="{Binding Playlists}"
+                     SelectionChanged="songsListBox_SelectionChanged">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <Label Content="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <DataGrid x:Name="dataGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" HorizontalAlignment="Right" Width="751" Margin="0,31,0,80">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding id}" Visibility="Hidden"/>
+                    <DataGridTextColumn Binding="{Binding title}" Header="Title" Width="240"/>
+                    <DataGridTextColumn Binding="{Binding artist}" Header="Artist" Width="185"/>
+                    <DataGridTextColumn Binding="{Binding album}" Header="Album" Width="185"/>
+                    <DataGridTextColumn Binding="{Binding genre}" Header="Genre" Width="137"/>
+                </DataGrid.Columns>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Play" Click="PlayMenuItem_Click" />
+                        <MenuItem Header="Stop" Click="StopMenuItem_Click"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+            <StackPanel Margin="214,408,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="342">
+                <Button x:Name="playButton" Content="Play" Margin="5" Width="75"/>
+                <Button x:Name="stopButton" Content="Stop" Margin="5" Width="75"/>
+                
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </Window>
