@@ -282,30 +282,64 @@ namespace myTunes
             }
         }
 
-        private void SongsDataGrid_PreviewMouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed && dataGrid.SelectedItem != null)
-            {
-                var songId = ((DataRowView)dataGrid.SelectedItem)["id"];
-                DragDrop.DoDragDrop(dataGrid, songId, DragDropEffects.Move);
-            }
-        }
-
-        private void SongsDataGrid_Drop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(typeof(int)) && songsListBox.SelectedItem is string playlistName)
-            {
-                int songId = (int)e.Data.GetData(typeof(int));
-                musicRepo.AddSongToPlaylist(songId, playlistName);
-                DisplaySongsForPlaylist(playlistName);
-            }
-        }
-        
         private void moreInfo_Click(object sender, RoutedEventArgs e)
         {
             var about = new About();
             about.Owner = this; // Set the owner to the main window
             about.ShowDialog();
+        }
+
+        private void SongsDataGrid_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && dataGrid.SelectedItem != null)
+            {
+                // Get the song ID to pass in drag-and-drop operation
+                int songId = (int)((DataRowView)dataGrid.SelectedItem)["id"];
+
+                // Start drag-and-drop with the song ID
+                DragDrop.DoDragDrop(dataGrid, songId, DragDropEffects.Move);
+            }
+        }
+
+        // Handle DragOver event to allow dropping on a specific playlist
+        private void PlaylistLabel_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(int)))
+            {
+                e.Effects = DragDropEffects.Move;
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+            }
+            e.Handled = true;
+        }
+
+        // Handle Drop event to add song to the targeted playlist
+        private void PlaylistLabel_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(int)))
+            {
+                // Get the song ID from the drag data
+                int songId = (int)e.Data.GetData(typeof(int));
+
+                // Identify the target playlist by its Label content
+                Label playlistLabel = sender as Label;
+                if (playlistLabel != null)
+                {
+                    string playlistName = playlistLabel.Content.ToString();
+
+                    // Add song to the playlist in MusicRepo
+                    musicRepo.AddSongToPlaylist(songId, playlistName);
+
+                    // Refresh DataGrid if viewing the playlist where song was dropped
+                    if ((string)songsListBox.SelectedItem == playlistName)
+                    {
+                        DisplaySongsForPlaylist(playlistName);
+                    }
+                }
+            }
+            e.Handled = true;
         }
     }
 }

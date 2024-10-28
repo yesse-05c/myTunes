@@ -30,12 +30,14 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
-                            <Label Content="{Binding}" />
+                            <Label Content="{Binding}" AllowDrop="True" DragOver="PlaylistLabel_DragOver" Drop="PlaylistLabel_Drop" />
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <DataGrid x:Name="dataGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single" HorizontalAlignment="Right" Width="751" Margin="0,31,0,80">
+            <DataGrid x:Name="dataGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" 
+                      SelectionMode="Single" HorizontalAlignment="Right" Width="751" Margin="0,31,0,80"
+                      MouseMove="SongsDataGrid_PreviewMouseMove" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding id}" Visibility="Hidden"/>
                     <DataGridTextColumn Binding="{Binding title}" Header="Title" Width="240"/>
