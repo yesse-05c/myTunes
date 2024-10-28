@@ -443,6 +443,20 @@ namespace myTunes
         {
             return Playlists;
         }
+
+        public void MoveSongInPlaylist(string playlist, int oldPosition, int newPosition)
+        {
+            DataTable table = musicDataSet.Tables["playlist_song"];
+
+            var songRow = table.AsEnumerable()
+                               .FirstOrDefault(row => row.Field<string>("playlist_name") == playlist
+                                                      && row.Field<int>("position") == oldPosition);
+            if (songRow == null) return;
+
+            songRow["position"] = newPosition;
+            Console.WriteLine($"Moved song in playlist {playlist} from position {oldPosition} to {newPosition}");
+            Save();
+        }
     }    
 
 }

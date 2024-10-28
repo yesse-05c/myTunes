@@ -122,6 +122,8 @@ namespace myTunes
                 Album = album,
                 Filename = filePath
             });
+            // Save the updated music data to XML
+            musicRepo.Save(); // Ensure that changes are saved
 
             // Refresh the data grid to show the new song and also ensure "All Music" is selected
             if (songsListBox.SelectedItem?.ToString() == "All Music")
@@ -337,6 +339,8 @@ namespace myTunes
                     {
                         DisplaySongsForPlaylist(playlistName);
                     }
+                    // Save the updated music data to XML
+                    musicRepo.Save(); // Call your existing Save method
                 }
             }
             e.Handled = true;
