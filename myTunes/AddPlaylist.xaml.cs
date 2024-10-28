@@ -19,7 +19,7 @@ namespace myTunes
     /// </summary>
     public partial class AddPlaylist : Window
     {
-        public string PlaylistName { get; private set; }
+        public string? PlaylistName { get; private set; }
         public AddPlaylist()
         {
             InitializeComponent();
