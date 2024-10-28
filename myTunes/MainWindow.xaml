@@ -49,6 +49,9 @@
                     <ContextMenu>
                         <MenuItem Header="Play" Click="PlayMenuItem_Click" />
                         <MenuItem Header="Stop" Click="StopMenuItem_Click"/>
+                        <MenuItem Header="Remove from All Music" Click="RemoveFromAllMusic_Click"/>
+                        <MenuItem Header="Remove from Playlist" Click="RemoveFromPlaylist_Click"/>
+
                     </ContextMenu>
                 </DataGrid.ContextMenu>
             </DataGrid>

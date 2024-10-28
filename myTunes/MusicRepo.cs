@@ -325,6 +325,55 @@ namespace myTunes
             return true;
         }
 
+        public void RemoveSong(int songId)
+        {
+            // Remove song from the 'All Music' view
+            DataRow[] songRows = Songs.Select($"id = {songId}");
+            if (songRows.Length > 0)
+            {
+                Songs.Rows.Remove(songRows[0]);
+            }
+
+            // Remove song from all playlists it may be in
+            DataTable playlistTable = musicDataSet.Tables["playlist_song"];
+            DataRow[] playlistRows = playlistTable.Select($"song_id = {songId}");
+
+            // Remove each occurrence of the song from the playlists
+            foreach (DataRow row in playlistRows)
+            {
+                playlistTable.Rows.Remove(row);
+            }
+
+            Console.WriteLine("Removed song with ID " + songId + " from all playlists.");
+        }
+
+        public void RemoveSongFromPlaylist(int songId, string playlistName)
+        {
+            DataTable playlistTable = musicDataSet.Tables["playlist_song"];
+            DataRow[] rows = playlistTable.Select($"song_id = {songId} AND playlist_name = '{playlistName}'");
+
+            // If the song is found in the specified playlist, remove it
+            if (rows.Length > 0)
+            {
+                int removedPosition = (int)rows[0]["position"];
+                playlistTable.Rows.Remove(rows[0]);
+
+                // Update positions for remaining songs in this playlist
+                foreach (DataRow row in playlistTable.Rows)
+                {
+                    if (row["playlist_name"].ToString() == playlistName && (int)row["position"] > removedPosition)
+                    {
+                        row["position"] = (int)row["position"] - 1;
+                    }
+                }
+
+                Console.WriteLine($"Removed song {songId} from playlist '{playlistName}'.");
+            }
+            else
+            {
+                Console.WriteLine($"Song {songId} not found in playlist '{playlistName}'.");
+            }
+        }
         /// <summary>
         /// Add a song to the last position of the playlist.
         /// </summary>
@@ -361,12 +410,17 @@ namespace myTunes
             return Convert.ToInt32(positions.Max());
         }
 
+
+
         /// <summary>
         /// Remove an existing song at the given position from the playlist.
         /// </summary>
         /// <param name="position"></param>
         /// <param name="songId"></param>
         /// <param name="playlist"></param>
+        /// 
+        // Function below from GPT prompt:I need you to alter my code so that songs can be removed from the list of All Music by right-clicking the song and selecting “Remove” from the context menu.  A dialog box should confirm the removal.  A song can be removed from a playlist by viewing the songs in the playlist, right-clicking the song, and selecting “Remove from Playlist” from the context menu.  No dialog box is necessary.  Note that the ordering of the songs in a playlist should be updated to reflect the removal of a song so if song at position 2 was removed, the 3rd song is now position 2, the 4th is position 3, and so on.
+
         public void RemoveSongFromPlaylist(int position, int songId, string playlist)
         {
             Console.WriteLine("RemoveSongFromPlaylist: id=" + songId + ", pos=" + position + 

@@ -291,7 +291,64 @@ namespace myTunes
             about.ShowDialog();
         }
 
-        private void SongsDataGrid_PreviewMouseMove(object sender, MouseEventArgs e)
+
+        //Next three functions gotten from GPT prompt: 
+        private void RemoveFromAllMusic_Click(object sender, RoutedEventArgs e)
+        {
+            if (dataGrid.SelectedItem is DataRowView selectedSong)
+            {
+                RemoveSongFromAllMusic(selectedSong);
+            }
+        }
+
+        private void RemoveSongFromAllMusic(DataRowView selectedSong)
+        {
+            var result = MessageBox.Show("Are you sure you want to remove this song from All Music?", "Confirm Delete", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                int songId = (int)selectedSong["id"];
+                musicRepo.RemoveSong(songId);
+                RefreshDataGrid();
+            }
+        }
+
+        private void RemoveFromPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            if (dataGrid.SelectedItem is DataRowView selectedSong && songsListBox.SelectedItem is string playlistName && playlistName != "All Music")
+            {
+                RemoveSongFromPlaylist(selectedSong, playlistName);
+            }
+        }
+
+        private void RemoveSongFromPlaylist(DataRowView selectedSong, string playlistName)
+        {
+            int songId = (int)selectedSong["id"];
+            musicRepo.RemoveSongFromPlaylist(songId, playlistName);
+            if (songsListBox.SelectedItem?.ToString() == playlistName)
+            {
+                DisplaySongsForPlaylist(playlistName);
+            }
+        }
+
+        private void RefreshDataGrid()
+        {
+            // Refresh based on the selected item in the ListBox (either "All Music" or a specific playlist)
+            string selectedPlaylist = songsListBox.SelectedItem.ToString();
+
+            if (selectedPlaylist == "All Music")
+            {
+                // Display all songs
+                dataGrid.ItemsSource = musicRepo.Songs.DefaultView;
+            }
+            else if (!string.IsNullOrEmpty(selectedPlaylist))
+            {
+                // Display songs specific to the selected playlist
+                DisplaySongsForPlaylist(selectedPlaylist);
+            }
+        }
+    
+
+    private void SongsDataGrid_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed && dataGrid.SelectedItem != null)
             {
@@ -346,4 +403,5 @@ namespace myTunes
             e.Handled = true;
         }
     }
+
 }
