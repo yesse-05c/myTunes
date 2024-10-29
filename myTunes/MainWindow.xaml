@@ -41,10 +41,23 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
-                            <Label Content="{Binding}" AllowDrop="True" DragOver="PlaylistLabel_DragOver" Drop="PlaylistLabel_Drop" />
+                            <Label Content="{Binding}" AllowDrop="True" DragOver="PlaylistLabel_DragOver" Drop="PlaylistLabel_Drop">
+                                
+
+                            </Label>
+                            
+                            
                         </StackPanel>
+                        
                     </DataTemplate>
                 </ListBox.ItemTemplate>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Rename" Click="RenamePlaylist_Click"/>
+                        <MenuItem Header="Delete" Click="RemovePlaylistMenuItem_Click"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+
             </ListBox>
 
             <!-- DataGrid in Second Column that Adjusts Horizontally -->
@@ -73,6 +86,7 @@
                         HorizontalAlignment="Left" Margin="10,5,0,15" Grid.Column="1">
                 <Button x:Name="playButton" Content="Play" Margin="5" Width="75" />
                 <Button x:Name="stopButton" Content="Stop" Margin="5" Width="75" />
+             
             </StackPanel>
         </Grid>
     </DockPanel>

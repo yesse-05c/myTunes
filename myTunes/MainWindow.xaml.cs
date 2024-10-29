@@ -60,6 +60,37 @@ namespace myTunes
             addSongButton.Click += AddSongButton_Click; // Assume you have a button named addSongButton
 
         }
+        private void RemovePlaylistMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (songsListBox.SelectedItem is string selectedPlaylist && selectedPlaylist != "All Music")
+            {
+                var result = MessageBox.Show($"Are you sure you want to delete the playlist '{selectedPlaylist}'?", "Confirm Delete", MessageBoxButton.YesNo);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    // Call the DeletePlaylist method in musicRepo
+                    musicRepo.DeletePlaylist(selectedPlaylist);
+
+                    // Refresh the ListBox to reflect changes
+                    RefreshPlaylists();
+
+                    // Select "All Music" after deletion to avoid null selection issues
+                    songsListBox.SelectedIndex = 0;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Cannot delete the 'All Music' playlist.", "Delete Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+
+        private void RenamePlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedPlaylist = (string)songsListBox.SelectedItem;
+        
+        }
+
         //code gotten from ChatGPT prompt: I want you to alter the code so that when a specific playlist is selected, only songs from that playlist should be displayed in the data grid. 
         private void songsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
