@@ -33,8 +33,7 @@ namespace myTunes
         private readonly MusicRepo musicRepo;
         private readonly MediaPlayer mediaPlayer;
         
-        
-
+    
 
         public MainWindow()
         {
@@ -247,7 +246,7 @@ namespace myTunes
                 }
             }
         }
-
+        //code gotten from chat gpt: Review my code and alter it so "All music" is always at the top when a new pla
         private void RefreshPlaylists()
         {
             // Fetch playlists from musicRepo
