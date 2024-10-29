@@ -15,7 +15,7 @@ using System.Windows.Threading;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.Win32;
-
+using myTunes;
 namespace myTunes
 
 {
@@ -87,9 +87,38 @@ namespace myTunes
 
         private void RenamePlaylist_Click(object sender, RoutedEventArgs e)
         {
-            string selectedPlaylist = (string)songsListBox.SelectedItem;
-        
+            if (songsListBox.SelectedItem is string selectedPlaylist && selectedPlaylist != "All Music")
+            {
+                // Open the rename dialog box
+                var renameDialog = new RenamePlaylistDialog(selectedPlaylist);
+                if (renameDialog.ShowDialog() == true)
+                {
+                    string newPlaylistName = renameDialog.NewPlaylistName;
+
+                    // Validate new playlist name (no blanks or duplicates)
+                    if (!string.IsNullOrWhiteSpace(newPlaylistName) && !musicRepo.Playlists.Contains(newPlaylistName))
+                    {
+                        // Use RenamePlaylist in MusicRepo
+                        musicRepo.RenamePlaylist(selectedPlaylist, newPlaylistName);
+
+                        // Refresh the playlist list in the UI
+                        RefreshPlaylists();
+
+                        // Optionally reselect the renamed playlist
+                        songsListBox.SelectedItem = newPlaylistName;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please enter a unique name for the playlist.", "Invalid Name", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Cannot rename the 'All Music' playlist.", "Rename Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
+
 
         //code gotten from ChatGPT prompt: I want you to alter the code so that when a specific playlist is selected, only songs from that playlist should be displayed in the data grid. 
         private void songsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
