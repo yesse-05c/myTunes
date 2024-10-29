@@ -58,6 +58,8 @@ namespace myTunes
             playButton.Click += PlayButton_Click;
             stopButton.Click += StopButton_Click;
             addSongButton.Click += AddSongButton_Click; // Assume you have a button named addSongButton
+            CommandBindings.Add(new CommandBinding(MediaCommands.Play, PlayCommand_Executed, PlayCommand_CanExecute));
+            CommandBindings.Add(new CommandBinding(MediaCommands.Stop, StopCommand_Executed, StopCommand_CanExecute));
 
         }
         private void RemovePlaylistMenuItem_Click(object sender, RoutedEventArgs e)
