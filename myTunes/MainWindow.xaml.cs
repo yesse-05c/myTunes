@@ -369,6 +369,7 @@ namespace myTunes
             {
                 int songId = (int)selectedSong["id"];
                 musicRepo.RemoveSong(songId);
+                musicRepo.Save();
                 RefreshDataGrid();
             }
         }
@@ -385,6 +386,7 @@ namespace myTunes
         {
             int songId = (int)selectedSong["id"];
             musicRepo.RemoveSongFromPlaylist(songId, playlistName);
+            musicRepo.Save();
             if (songsListBox.SelectedItem?.ToString() == playlistName)
             {
                 DisplaySongsForPlaylist(playlistName);
