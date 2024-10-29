@@ -5,6 +5,38 @@
         MinHeight="400"
         Title="My Tunes" Height="571" Width="1000" Icon="/Images/wave-sound.png">
 
+    <Window.Resources>
+        <!-- Style for Play Button -->
+        <Style TargetType="Button" x:Key="PlayButtonStyle">
+            <Setter Property="Command" Value="MediaCommands.Play"/>
+            <Setter Property="Content" Value="Play"/>
+            <Setter Property="Width" Value="75"/>
+            <Setter Property="Background" Value="LightGreen"/>
+            <Style.Triggers>
+                <!-- Disable Play button if no song is selected in dataGrid -->
+                <DataTrigger Binding="{Binding SelectedItem, ElementName=dataGrid}" Value="{x:Null}">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Setter Property="Background" Value="Gray"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Style for Stop Button -->
+        <Style TargetType="Button" x:Key="StopButtonStyle">
+            <Setter Property="Command" Value="MediaCommands.Stop"/>
+            <Setter Property="Content" Value="Stop"/>
+            <Setter Property="Width" Value="75"/>
+            <Setter Property="Background" Value="LightCoral"/>
+            <Style.Triggers>
+                <!-- Disable Stop button if no song is playing -->
+                <DataTrigger Binding="{Binding IsSongPlaying}" Value="False">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Setter Property="Background" Value="Gray"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
@@ -24,15 +56,11 @@
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" />
-                <!-- Fixed Width for ListBox -->
                 <ColumnDefinition Width="*" />
-                <!-- Stretchable Width for DataGrid -->
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <!-- Main content area -->
                 <RowDefinition Height="Auto" />
-                <!-- Bottom row for buttons -->
             </Grid.RowDefinitions>
 
             <!-- Fixed Width ListBox in First Column -->
@@ -41,10 +69,16 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
-                            <Label Content="{Binding}" AllowDrop="True" DragOver="PlaylistLabel_DragOver" Drop="PlaylistLabel_Drop" />
+                            <Label Content="{Binding}" AllowDrop="True" DragOver="PlaylistLabel_DragOver" Drop="PlaylistLabel_Drop"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Rename" Click="RenamePlaylist_Click"/>
+                        <MenuItem Header="Delete" Click="RemovePlaylistMenuItem_Click"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
             </ListBox>
 
             <!-- DataGrid in Second Column that Adjusts Horizontally -->
@@ -60,7 +94,7 @@
                 </DataGrid.Columns>
                 <DataGrid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Play" Click="PlayMenuItem_Click" />
+                        <MenuItem Header="Play" Click="PlayMenuItem_Click"/>
                         <MenuItem Header="Stop" Click="StopMenuItem_Click"/>
                         <MenuItem Header="Remove from All Music" Click="RemoveFromAllMusic_Click"/>
                         <MenuItem Header="Remove from Playlist" Click="RemoveFromPlaylist_Click"/>
@@ -71,8 +105,8 @@
             <!-- Button StackPanel in Bottom Row, Fixed Position on the Left -->
             <StackPanel Grid.Row="1" Orientation="Horizontal" 
                         HorizontalAlignment="Left" Margin="10,5,0,15" Grid.Column="1">
-                <Button x:Name="playButton" Content="Play" Margin="5" Width="75" />
-                <Button x:Name="stopButton" Content="Stop" Margin="5" Width="75" />
+                <Button x:Name="playButton" Style="{StaticResource PlayButtonStyle}" Click="PlayButton_Click"/>
+                <Button x:Name="stopButton" Style="{StaticResource StopButtonStyle}" Click="StopButton_Click"/>
             </StackPanel>
         </Grid>
     </DockPanel>
