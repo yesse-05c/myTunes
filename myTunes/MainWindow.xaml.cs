@@ -72,6 +72,9 @@ namespace myTunes
                     // Call the DeletePlaylist method in musicRepo
                     musicRepo.DeletePlaylist(selectedPlaylist);
 
+                    //Save changes 
+                    musicRepo.Save();
+
                     // Refresh the ListBox to reflect changes
                     RefreshPlaylists();
 
@@ -101,6 +104,9 @@ namespace myTunes
                     {
                         // Use RenamePlaylist in MusicRepo
                         musicRepo.RenamePlaylist(selectedPlaylist, newPlaylistName);
+
+                        //Save changes 
+                        musicRepo.Save();
 
                         // Refresh the playlist list in the UI
                         RefreshPlaylists();
